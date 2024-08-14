@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 options = webdriver.ChromeOptions()
 options.add_argument("start-maximized")
-url = 'https://olx.co.id'
+url = ''
 driver = webdriver.Chrome()
 driver.maximize_window()
 driver.get(url)
@@ -17,9 +17,9 @@ driver.get(url)
 for i in range(4):
     time.sleep(2)
     try:
-        element = driver.find_element(By.CLASS_NAME, "rui-apowA.rui-htytx.rui-UGVY0")
+        element = driver.find_element(By.CLASS_NAME, "")
         element.click()
-        time.sleep(1)
+        time.sleep(2)
     except NoSuchElementException:
         break
 
