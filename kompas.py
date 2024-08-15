@@ -50,4 +50,4 @@ def scrape_kompas(date, month, year, file_name):
     df = pd.DataFrame(data)
     df.to_csv(f'./file/{file_name}', index=False)
 
-scrape_kompas('31','07','2024', 'kompasindex.csv')
+scrape_kompas('31','07','2024', 'kompas.csv')

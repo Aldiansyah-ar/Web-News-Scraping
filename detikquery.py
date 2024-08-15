@@ -56,4 +56,4 @@ def scrape_detik(query, category_id, start_date, end_date, file_name):
     df = pd.DataFrame(data)
     df.to_csv(f'./file/{file_name}', index=False)
 
-scrape_detik('Kecelakaan Subang', 3, '11/05/2024', '16/05/2024', 'kecelakaansubang.csv')
+scrape_detik('Kecelakaan Subang', 3, '11/05/2024', '16/05/2024', 'detikquery.csv')
