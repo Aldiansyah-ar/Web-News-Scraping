@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 user_agent = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36'}
 
 def kompas_page(date, month, year):
+  global user_agent
   url = f'https://indeks.kompas.com/?site=nasional&date={year}-{month}-{date}&page=1'
   text = requests.get(url, user_agent).text
   soup = BeautifulSoup(text, 'lxml')
@@ -14,14 +15,14 @@ def kompas_page(date, month, year):
   return last_page
 
 def scrape_kompas(date, month, year, file_name):
-    global hades
+    global user_agent
     last_page = kompas_page(date, month, year)
     data = []
     id = 0
     for page in range(1,int(last_page)+1):
         url = f'https://indeks.kompas.com/?site=nasional&date={year}-{month}-{date}&page={page}'
         text = requests.get(url,user_agent).text
-        soup = BeautifulSoup(text)
+        soup = BeautifulSoup(text, 'lxml')
         articles_container = soup.find_all('div', class_='articleItem')
         print(f'page: {page}')
         for article in articles_container:
@@ -29,7 +30,7 @@ def scrape_kompas(date, month, year, file_name):
             link = article.find('a', class_='article-link')['href']
             headline = article.find('h2').text
             news = requests.get(link,user_agent).text
-            news_soup = BeautifulSoup(news)
+            news_soup = BeautifulSoup(news, 'lxml')
             date_ = news_soup.find('div', class_='read__time').text
             content_container = news_soup.find('div', class_='read__content')
             contents = content_container.find_all('p')
@@ -41,7 +42,7 @@ def scrape_kompas(date, month, year, file_name):
 
             print(f'article: {id}')
             data.append({'id': id,
-                         'source': 'kompas',
+                         'source': 'Kompas',
                          'title': headline, 
                          'url': link,
                          'content': content, 

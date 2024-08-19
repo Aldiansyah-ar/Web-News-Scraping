@@ -49,7 +49,7 @@ def scrape_kumparan(file_name):
         link = container.find('a')['href']
         link = 'https://kumparan.com' + link
         data.append({'id': id, 
-                     'source': 'kumparan', 
+                     'source': 'Kumparan', 
                      'title': headline,
                      'url': link, 
                      'content': None, 

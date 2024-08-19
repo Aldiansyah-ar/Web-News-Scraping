@@ -3,10 +3,11 @@ import pandas as pd
 from bs4 import BeautifulSoup
 user_agent = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36'}
 
-def detik_index_page(tanggal):
-  url = f'https://news.detik.com/berita/indeks/1?date={tanggal}'
+def detik_index_page(date, month, year):
+  global user_agent
+  url = f'https://news.detik.com/berita/indeks/1?date={year}-{month}-{date}'
   text = requests.get(url, user_agent).text
-  sop = BeautifulSoup(text)
+  sop = BeautifulSoup(text, 'lxml')
   try:
     paging = sop.find_all('div','pagination text-center mgt-16 mgb-16')[0].find_all('a')[-2]
     last_page = paging.text
@@ -16,15 +17,15 @@ def detik_index_page(tanggal):
     last_page = 1
   return last_page
 
-def scrape_index_detik(date, file_name):
+def scrape_index_detik(date, month, year, file_name):
     global user_agent
-    last_page = detik_index_page(date)
+    last_page = detik_index_page(date, month, year)
     data = []
     id = 0
     for page in range(1,int(last_page)+1):
-        url = f'https://news.detik.com/berita/indeks/{page}?date={date}'
+        url = f'https://news.detik.com/berita/indeks/{page}?date={year}-{month}-{date}'
         text = requests.get(url,user_agent).text
-        soup = BeautifulSoup(text)
+        soup = BeautifulSoup(text, 'lxml')
         articles_container = soup.find_all('article', class_='list-content__item')
         print(f'page: {page}')
         for article in articles_container:
@@ -46,7 +47,7 @@ def scrape_index_detik(date, file_name):
             print(f'article: {id}')                
             content = location + ' - ' + content
             data.append({'id': id,
-                         'source': 'detik',
+                         'source': 'Detik',
                          'title': headline, 
                          'url': link,
                          'content': content, 
@@ -55,4 +56,4 @@ def scrape_index_detik(date, file_name):
     df = pd.DataFrame(data)
     df.to_csv(f'./file/{file_name}', index=False)
 
-scrape_index_detik('2024-05-12', 'detikindex.csv')
+scrape_index_detik('12', '05', '2024', 'detikindex.csv')
