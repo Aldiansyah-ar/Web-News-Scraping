@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 user_agent = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36'}
 
 def detik_page(query, start_date, end_date):
+  global user_agent
   url = f'https://www.detik.com/search/searchnews?query={query}&siteid=3&sortby=time&sorttime=1&fromdatex={start_date}&todatex={end_date}&result_type=latest'
   text = requests.get(url, user_agent).text
   sop = BeautifulSoup(text, 'lxml')

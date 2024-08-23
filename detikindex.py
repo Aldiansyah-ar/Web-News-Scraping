@@ -9,10 +9,8 @@ def detik_index_page(date, month, year):
   text = requests.get(url, user_agent).text
   sop = BeautifulSoup(text, 'lxml')
   try:
-    paging = sop.find_all('div','pagination text-center mgt-16 mgb-16')[0].find_all('a')[-2]
+    paging = sop.find('div','pagination text-center mgt-16 mgb-16').find_all('a')[-2]
     last_page = paging.text
-    if last_page == '':
-      last_page = 1
   except:
     last_page = 1
   return last_page
