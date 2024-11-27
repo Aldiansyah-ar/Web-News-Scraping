@@ -29,8 +29,9 @@ def scrape_detik(query, start_date, end_date, file_name):
         for article in articles_container:
             headline = article.find('div', 'media__text').find('a').text
             link = article.find('div', 'media__text').find('a')['href']
+            link_ = link + f'?single=1'
             try:
-              news = requests.get(link,user_agent).text
+              news = requests.get(link_,user_agent).text
               news_soup = BeautifulSoup(news, 'lxml')
               date = news_soup.find('div', class_='detail__date').text
               content_container = news_soup.find('div', class_='detail__body-text itp_bodycontent')
@@ -57,4 +58,5 @@ def scrape_detik(query, start_date, end_date, file_name):
     df = pd.DataFrame(data)
     df.to_csv(f'./file/{file_name}', index=False)
 
-scrape_detik('Kecelakaan Subang', '11/05/2024', '16/05/2024', 'detikquery.csv')
+scrape_detik('Gempa Cianjur', '21/11/2022', '16/12/2022', 'gempacianjur.csv')
+scrape_detik('Kanjuruhan', '02/10/2022', '26/10/2022', 'tragedikanjuruhan.csv')
